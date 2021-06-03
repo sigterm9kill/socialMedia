@@ -4,7 +4,7 @@ import axios from "axios";
 import { HeaderMessage, FooterMessage } from "../components/Common/WelcomeMessage";
 
 
-function Login(props) {
+function Login() {
     return (
         <>
             <HeaderMessage />
