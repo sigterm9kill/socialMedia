@@ -8,7 +8,7 @@ export const HeaderMessage = () => {
 
     return (
         <Message
-            color="purple"
+            color="teal"
             attached
             header={signupRoute ? "Get Started" : "Welcome Back"}
             icon={signupRoute ? "settings" : "privacy"}
@@ -30,7 +30,8 @@ export const FooterMessage = () => {
                 <>
                     <Message attached="bottom" warning>
                         <Icon name="help" />
-                    Existing User? <Link href="/login">Login Here Instead</Link>
+                    Existing User?{" "}
+                        <Link href="/login">Login Here Instead</Link>
                     </Message>
                     <Divider hidden />
                 </>

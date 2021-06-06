@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Form, Button, Message, Segment, TextArea, Divider } from "semantic-ui-react";
-
+import CommonInputs from "../components/Common/CommonInputs";
 import { HeaderMessage, FooterMessage } from "../components/Common/WelcomeMessage";
+const regexUserName = /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/;
 
 function Signup() {
     const [user, setUser] = useState({
@@ -18,19 +19,28 @@ function Signup() {
     const { name, email, password, bio } = user;
 
     const handleChange = e => {
-
         const { name, value } = e.target;
         setUser(prev => ({ ...prev, [name]: value }));
     }
 
     const [showSocialLinks, setShowSocialLinks] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
     const [errorMsg, setErrorMsg] = useState(null);
     const [formLoading, setFormLoading] = useState(false);
+    const [submitDisabled, setSubmitDisabled] = useState(true);
 
-    const [username, setUsername] = useState('');
+
+    const [username, setUsername] = useState("");
     const [usernameLoading, setUsernameLoading] = useState(false);
     const [usernameAvailable, setUsernameAvailable] = useState(false);
     const handleSubmit = e => e.preventDefault();
+
+    useEffect(() => {
+        const isUser = Object.values({ name, email, password, bio }).every(item => Boolean(item));
+        isUser ? setSubmitDisabled(false) : setSubmitDisabled(true);
+
+    }, [user])
+
 
     return (
         <>
@@ -46,7 +56,7 @@ function Signup() {
                     onDismiss={() => setErrorMsg(null)} />
 
                 <Segment>
-                    <Form.Imput
+                    <Form.Input
                         lable="Name"
                         placeholder="Name"
                         name="name"
@@ -58,7 +68,7 @@ function Signup() {
                         required
                     />
 
-                    <Form.Imput
+                    <Form.Input
                         lable="Email"
                         placeholder="Email"
                         name="email"
@@ -71,7 +81,7 @@ function Signup() {
                         required
                     />
 
-                    <Form.Imput
+                    <Form.Input
                         lable="Password"
                         placeholder="Password"
                         name="password"
@@ -89,6 +99,42 @@ function Signup() {
                         required
                     />
 
+                    <Form.Input
+                        loading={usernameLoading}
+                        error={!usernameAvailable}
+                        required
+                        lable="Username"
+                        placeholder="Username"
+
+                        value={username}
+                        onChange={e => {
+                            setUsername(e.target.value)
+                            if (regexUserName.text(e.target.value)) {
+                                setUsernameAvailable(true);
+                            } else {
+                                setUsernameAvailable(false);
+                            }
+                        }}
+                        fluid
+                        icon={usernameAvailable ? "check" : "close"}
+                        iconPosition="left"
+                    />
+
+                    <CommonInputs
+                        user={user}
+                        showSocialLinks={showSocialLinks}
+                        setShowSocialLinks={setShowPassword}
+                        handleChange={handleChange}
+                    />
+
+                    <Divider hidden />
+
+                    <Button
+                        content="Signup"
+                        type="submit"
+                        color="orange"
+                        disabled={submitDisabled || !usernameAvailable}
+                    />
 
                 </Segment>
             </Form>
