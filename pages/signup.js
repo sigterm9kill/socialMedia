@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Form, Button, Message, Segment, TextArea, Divider } from "semantic-ui-react";
 import CommonInputs from "../components/Common/CommonInputs";
+import ImageDropDiv from "../components/Common/ImageDropDiv";
+
 import { HeaderMessage, FooterMessage } from "../components/Common/WelcomeMessage";
 const regexUserName = /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/;
 
@@ -19,7 +21,13 @@ function Signup() {
     const { name, email, password, bio } = user;
 
     const handleChange = e => {
-        const { name, value } = e.target;
+        const { name, value, files } = e.target;
+
+        if (name === 'media') {
+            setMedia(files[0]);
+            setMediaPreview(URL.createObjectURL(files[0]));
+        }
+
         setUser(prev => ({ ...prev, [name]: value }));
     }
 
@@ -35,11 +43,16 @@ function Signup() {
     const [usernameAvailable, setUsernameAvailable] = useState(false);
     const handleSubmit = e => e.preventDefault();
 
+    const [media, setMedia] = useState("");
+    const [usernameLoading, setUsernameLoading] = useState(false);
+    const [usernameAvailable, setUsernameAvailable] = useState(false);
+    const inputRef = useReF();
+
     useEffect(() => {
         const isUser = Object.values({ name, email, password, bio }).every(item => Boolean(item));
         isUser ? setSubmitDisabled(false) : setSubmitDisabled(true);
 
-    }, [user])
+    }, [user]);
 
 
     return (
@@ -56,6 +69,17 @@ function Signup() {
                     onDismiss={() => setErrorMsg(null)} />
 
                 <Segment>
+                    <ImageDropDiv
+                        mediaPreview={mediaPreview}
+                        setMediaPreview={setMediaPreview}
+                        setMedia={setMedia}
+                        inputRef={inputRef}
+                        highlighted={highlighted}
+                        setHighlighted={setHighlighted}
+                        handleChange={handleChange}
+                    />
+
+
                     <Form.Input
                         lable="Name"
                         placeholder="Name"
@@ -130,6 +154,7 @@ function Signup() {
                     <Divider hidden />
 
                     <Button
+                        icon="signup"
                         content="Signup"
                         type="submit"
                         color="orange"
