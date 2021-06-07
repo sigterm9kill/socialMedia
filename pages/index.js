@@ -99,53 +99,52 @@ function Index({ user, postsData, errorLoading }) {
 
   return (
     <>
-      {notificationPopup && newNotification !== null && (
-        <NotificationPortal
-          newNotification={newNotification}
+      {
+        notificationPopup && newNotification !== null && (<
+          NotificationPortal newNotification={newNotification}
           notificationPopup={notificationPopup}
           showNotificationPopup={showNotificationPopup}
         />
-      )}
+        )
+      }
 
-      {showToastr && <PostDeleteToastr />}
+      { showToastr && < PostDeleteToastr />}
 
-      {newMessageModal && newMessageReceived !== null && (
-        <MessageNotificationModal
-          socket={socket}
+      {
+        newMessageModal && newMessageReceived !== null && (<
+          MessageNotificationModal socket={socket}
           showNewMessageModal={showNewMessageModal}
           newMessageModal={newMessageModal}
           newMessageReceived={newMessageReceived}
           user={user}
         />
-      )}
+        )}
 
       <Segment>
-        <CreatePost user={user} setPosts={setPosts} />
+        <CreatePost user={user}
+          setPosts={setPosts} />
 
-        {posts.length === 0 || errorLoading ? (
-          <NoPosts />
-        ) : (
-          <InfiniteScroll
-            hasMore={hasMore}
+        {
+          posts.length === 0 || errorLoading ? (<
+            NoPosts />
+          ) : (<
+            InfiniteScroll hasMore={hasMore}
             next={fetchDataOnScroll}
-            loader={<PlaceHolderPosts />}
-            endMessage={<EndMessage />}
-            dataLength={posts.length}
-          >
-            {posts.map(post => (
-              <CardPost
-                socket={socket}
+            loader={< PlaceHolderPosts />}
+            endMessage={< EndMessage />}
+            dataLength={posts.length} > {
+              posts.map(post => (<
+                CardPost socket={socket}
                 key={post._id}
                 post={post}
                 user={user}
                 setPosts={setPosts}
                 setShowToastr={setShowToastr}
               />
-            ))}
-          </InfiniteScroll>
-        )}
-      </Segment>
-    </>
+              ))
+            } </InfiniteScroll>
+          )
+        } </Segment> </>
   );
 }
 

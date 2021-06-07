@@ -1,6 +1,6 @@
 const baseUrl =
-  process.env.NODE_ENV !== "production"
-    ? "http://localhost:3000"
-    : "https://inder-social-media2.herokuapp.com";
+    process.env.NODE_ENV !== "production" ?
+    "http://localhost:3000" :
+    "https: //git.heroku.com/social-media-sean.git";
 
 module.exports = baseUrl;
